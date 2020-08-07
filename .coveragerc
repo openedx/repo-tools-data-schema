@@ -1,0 +1,6 @@
+[run]
+branch = True
+data_file = .coverage
+source=repo_tools_data_schema
+omit =
+    tests
