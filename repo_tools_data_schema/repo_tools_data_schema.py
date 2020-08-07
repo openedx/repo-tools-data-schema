@@ -4,17 +4,12 @@ Functions for validating the schema of repo-tools-data.
 
 import collections
 import datetime
+import os.path
 import re
 
 import yaml
 from schema import And, Optional, Or, Schema, SchemaError
 from yaml.constructor import ConstructorError
-
-with open("orgs.yaml") as orgsf:
-    ALL_ORGS = set(yaml.safe_load(orgsf))
-
-with open("people.yaml") as peoplef:
-    ALL_PEOPLE = set(yaml.safe_load(peoplef))
 
 
 def valid_agreement(s):
@@ -203,11 +198,19 @@ def validate_orgs(filename):
     assert nicks == sorted(nicks)
 
 
-def validate_people(filename):
+def validate_people(filename, datadir="."):
     """
     Validate that `filename` conforms to our people.yaml schema.
+    Supporting files are found in `datadir`.
     """
     people = yaml.safe_load(open(filename))
+
+    global ALL_ORGS, ALL_PEOPLE
+    with open(os.path.join(datadir, "orgs.yaml")) as orgsf:
+        ALL_ORGS = set(yaml.safe_load(orgsf))
+
+    ALL_PEOPLE = set(people)
+
     PEOPLE_SCHEMA.validate(people)
     # keys should be sorted.
     nicks = list(people)
