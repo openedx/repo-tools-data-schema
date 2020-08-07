@@ -33,12 +33,9 @@ upgrade: ## update the requirements/*.txt files with the latest packages satisfy
 	$(PIP_COMPILE) -o requirements/dev.txt requirements/dev.in
 
 quality: ## check coding style with pycodestyle and pylint
-	touch tests/__init__.py
-	pylint repo_tools_data_schema tests test_utils manage.py *.py
-	rm tests/__init__.py
-	pycodestyle repo_tools_data_schema tests  *.py
-	pydocstyle repo_tools_data_schema tests *.py
-	isort --check-only --diff --recursive tests test_utils repo_tools_data_schema *.py test_settings.py
+	pylint repo_tools_data_schema *.py
+	pycodestyle repo_tools_data_schema *.py
+	isort --check-only --diff --recursive repo_tools_data_schema *.py
 	make selfcheck
 
 requirements: ## install development environment requirements

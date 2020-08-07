@@ -33,7 +33,6 @@ pip-tools==5.3.1          # via -r requirements/pip-tools.txt
 pluggy==0.13.1            # via -r requirements/quality.txt, -r requirements/travis.txt, diff-cover, pytest, tox
 py==1.9.0                 # via -r requirements/quality.txt, -r requirements/travis.txt, pytest, tox
 pycodestyle==2.6.0        # via -r requirements/quality.txt
-pydocstyle==5.0.2         # via -r requirements/quality.txt
 pygments==2.6.1           # via diff-cover
 pylint-celery==0.3        # via -r requirements/quality.txt, edx-lint
 pylint-django==2.0.11     # via -r requirements/quality.txt, edx-lint
@@ -46,7 +45,6 @@ pyyaml==5.3.1             # via -r requirements/quality.txt
 requests==2.24.0          # via -r requirements/travis.txt, codecov
 schema==0.7.2             # via -r requirements/quality.txt
 six==1.15.0               # via -r requirements/pip-tools.txt, -r requirements/quality.txt, -r requirements/travis.txt, astroid, diff-cover, edx-lint, packaging, pip-tools, tox, virtualenv
-snowballstemmer==2.0.0    # via -r requirements/quality.txt, pydocstyle
 toml==0.10.1              # via -r requirements/quality.txt, -r requirements/travis.txt, pytest, tox
 tox-battery==0.6.1        # via -r requirements/dev.in
 tox==3.19.0               # via -r requirements/travis.txt, tox-battery

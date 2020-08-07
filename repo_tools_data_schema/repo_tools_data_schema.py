@@ -6,10 +6,9 @@ import collections
 import datetime
 import re
 
-from schema import Schema, And, Optional, Or, SchemaError
 import yaml
+from schema import And, Optional, Or, Schema, SchemaError
 from yaml.constructor import ConstructorError
-from yaml import SafeLoader
 
 with open("orgs.yaml") as orgsf:
     ALL_ORGS = set(yaml.safe_load(orgsf))
@@ -17,29 +16,36 @@ with open("orgs.yaml") as orgsf:
 with open("people.yaml") as peoplef:
     ALL_PEOPLE = set(yaml.safe_load(peoplef))
 
+
 def valid_agreement(s):
     """Is this a valid "agreement" value?"""
     return s in ['institution', 'individual', 'none']
+
 
 def valid_email(s):
     """Is this a valid email?"""
     return isinstance(s, str) and re.match(r"^\S+@\S+\.\S+$", s)
 
+
 def valid_org(s):
     """Is this a valid GitHub org?"""
     return isinstance(s, str) and re.match(r"^[^/]+$", s)
+
 
 def valid_repo(s):
     """Is this a valid repo?"""
     return isinstance(s, str) and re.match(r"^[^/]+/[^/]+$", s)
 
+
 def existing_person(s):
     """Is this an existing person in people.yaml?"""
     return isinstance(s, str) and s in ALL_PEOPLE
 
+
 def not_empty_string(s):
     """A string that can't be empty."""
     return isinstance(s, str) and len(s) > 0
+
 
 def check_institution(d):
     """If the agreement is institution, then we have to have an institution."""
@@ -52,6 +58,7 @@ def check_institution(d):
             raise SchemaError("No-agreement should have no institution")
     return True
 
+
 def github_username(s):
     """Is this a valid GitHub username?"""
     # Usernames can have "[bot]" at the end for bots.
@@ -63,6 +70,7 @@ def github_username(s):
     # For Anant, we added a star just to be sure we wouldn't find some other
     # account, so allow a star at the end.
     return re.match(r"^[a-zA-Z0-9_-]+\*?$", s)
+
 
 def not_data_key(s):
     """Make sure the GitHub name is not a data line at the wrong indent."""
@@ -134,6 +142,7 @@ ORGS_SCHEMA = Schema(
 def color(s):
     return re.match(r"^[a-fA-F0-9]{6}$", s)
 
+
 LABELS_SCHEMA = Schema(
     {
         str: Or(
@@ -149,6 +158,7 @@ LABELS_SCHEMA = Schema(
         ),
     },
 )
+
 
 # Prevent duplicate keys in YAML.
 # Adapted from https://gist.github.com/pypt/94d747fe5180851196eb
@@ -167,6 +177,7 @@ def mapping_constructor(loader, node, deep=False):
         mapping[key] = value
 
     return mapping
+
 
 yaml.SafeLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, mapping_constructor)
 
