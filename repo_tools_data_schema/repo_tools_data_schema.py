@@ -4,7 +4,7 @@ Functions for validating the schema of repo-tools-data.
 
 import collections
 import datetime
-import os.path
+import pathlib
 import re
 
 import yaml
@@ -198,15 +198,15 @@ def validate_orgs(filename):
     assert nicks == sorted(nicks)
 
 
-def validate_people(filename, datadir="."):
+def validate_people(filename):
     """
     Validate that `filename` conforms to our people.yaml schema.
-    Supporting files are found in `datadir`.
+    Supporting files are found in the same directory as `filename`.
     """
     people = yaml.safe_load(open(filename))
 
     global ALL_ORGS, ALL_PEOPLE
-    with open(os.path.join(datadir, "orgs.yaml")) as orgsf:
+    with open(pathlib.Path(filename).parent / "orgs.yaml") as orgsf:
         ALL_ORGS = set(yaml.safe_load(orgsf))
 
     ALL_PEOPLE = set(people)
