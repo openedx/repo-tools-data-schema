@@ -4,6 +4,7 @@ Functions for validating the schema of repo-tools-data.
 
 import collections
 import datetime
+import difflib
 import pathlib
 import re
 
@@ -194,8 +195,7 @@ def validate_orgs(filename):
     orgs = yaml.safe_load(open(filename))
     ORGS_SCHEMA.validate(orgs)
     # keys should be sorted.
-    nicks = list(orgs)
-    assert nicks == sorted(nicks)
+    assert_sorted(orgs, "Keys in {}".format(filename))
 
 
 def validate_people(filename):
@@ -213,5 +213,25 @@ def validate_people(filename):
 
     PEOPLE_SCHEMA.validate(people)
     # keys should be sorted.
-    nicks = list(people)
-    assert nicks == sorted(nicks)
+    assert_sorted(people, "Keys in {}".format(filename))
+
+
+def assert_sorted(strs, what):
+    """
+    Assert that a sequence of strings is sorted.
+
+    Args:
+        strs (iterable of strings): the strings that must be sorted.
+        what (str): a description of what these are, for the failure message.
+    """
+    strs = list(strs)
+    sstrs = sorted(strs)
+    if strs == sstrs:
+        return
+
+    lines = difflib.Differ().compare(strs, sstrs)
+    out_of_place = set(ln[2:] for ln in lines if ln.startswith(("-", "+")))
+    msg = "{} must be sorted. These are out of place: {}".format(
+        what, ", ".join(out_of_place)
+    )
+    assert False, msg
