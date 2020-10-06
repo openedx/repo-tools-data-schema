@@ -41,6 +41,10 @@ quality: ## check coding style with pycodestyle and pylint
 requirements: ## install development environment requirements
 	pip install -r requirements/pip-tools.txt
 	pip-sync requirements/dev.txt requirements/private.*
+	pip install -e .
+
+test:
+	pytest
 
 selfcheck: ## check that the Makefile is well-formed
 	@echo "The Makefile is well-formed."

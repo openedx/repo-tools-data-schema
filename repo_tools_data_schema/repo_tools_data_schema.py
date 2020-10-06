@@ -20,7 +20,11 @@ def valid_agreement(s):
 
 def valid_email(s):
     """Is this a valid email?"""
-    return isinstance(s, str) and re.match(r"^\S+@\S+\.\S+$", s)
+    return bool(
+        isinstance(s, str) and
+        re.search(r"^[^@ ]+@[^@ ]+\.[^@ ]+$", s) and
+        not re.search(r"[,;?\\%]", s)
+    )
 
 
 def valid_org(s):
