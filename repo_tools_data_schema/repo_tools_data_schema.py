@@ -49,13 +49,14 @@ def not_empty_string(s):
 
 def check_institution(d):
     """If the agreement is institution, then we have to have an institution."""
-    if d['agreement'] == 'institution':
-        if 'institution' in d:
-            if d['institution'] not in ALL_ORGS:
-                raise SchemaError("Institution {!r} isn't in orgs.yaml: {}".format(d['institution'], d))
-    if d['agreement'] == 'none':
-        if 'institution' in d:
-            raise SchemaError("No-agreement should have no institution")
+    if "agreement" in d:
+        if d['agreement'] == 'institution':
+            if 'institution' in d:
+                if d['institution'] not in ALL_ORGS:
+                    raise SchemaError("Institution {!r} isn't in orgs.yaml: {}".format(d['institution'], d))
+        if d['agreement'] == 'none':
+            if 'institution' in d:
+                raise SchemaError("No-agreement should have no institution")
     return True
 
 
@@ -80,6 +81,31 @@ def not_data_key(s):
     ]
 
 
+def one_of_keys(*keys):
+    def _check(d):
+        if sum(k in d for k in keys) == 1:
+            return True
+        raise SchemaError("Must have one of {}".format(keys))
+    return _check
+
+
+COMMITTER_SCHEMA = Schema(
+    Or(
+        # "committer: false" means this person is not a committer.
+        False,
+        # or explain where they are a committer:
+        And(
+            {
+                Optional('orgs'): [valid_org],
+                Optional('repos'): [valid_repo],
+                Optional('champions'): [existing_person],
+            },
+            # You have to specify eithr orgs or repos:
+            one_of_keys("orgs", "repos"),
+        ),
+    ),
+)
+
 PEOPLE_SCHEMA = Schema(
     {
         And(github_username, not_data_key): And(
@@ -88,32 +114,24 @@ PEOPLE_SCHEMA = Schema(
                 'email': valid_email,
                 'agreement': valid_agreement,
                 Optional('institution'): not_empty_string,
-                Optional('is_robot'): bool,
+                Optional('is_robot'): True,
                 Optional('jira'): not_empty_string,
                 Optional('comments'): [str],
                 Optional('other_emails'): [valid_email],
                 Optional('before'): {
                     datetime.date: And(
                         {
-                            'agreement': valid_agreement,
+                            Optional('agreement'): valid_agreement,
                             Optional('institution'): not_empty_string,
                             Optional('comments'): [str],
-                            Optional('committer'): {
-                                Optional('orgs'): [valid_org],
-                                Optional('repos'): [valid_repo],
-                                Optional('champions'): [existing_person],
-                            },
+                            Optional('committer'): COMMITTER_SCHEMA,
                         },
                         check_institution,
                     ),
                 },
                 Optional('beta'): bool,
                 Optional('contractor'): bool,
-                Optional('committer'): {
-                    Optional('orgs'): [valid_org],
-                    Optional('repos'): [valid_repo],
-                    'champions': [existing_person],
-                },
+                Optional('committer'): COMMITTER_SCHEMA,
                 Optional('email_ok'): bool,
             },
             check_institution,
