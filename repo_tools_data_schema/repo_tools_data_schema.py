@@ -99,9 +99,10 @@ COMMITTER_SCHEMA = Schema(
                 Optional('orgs'): [valid_org],
                 Optional('repos'): [valid_repo],
                 Optional('champions'): [existing_person],
+                Optional('branches'): [not_empty_string],
             },
-            # You have to specify eithr orgs or repos:
-            one_of_keys("orgs", "repos"),
+            # You have to specify at least one of orgs, repos, or branches:
+            one_of_keys("orgs", "repos", "branches"),
         ),
     ),
 )
