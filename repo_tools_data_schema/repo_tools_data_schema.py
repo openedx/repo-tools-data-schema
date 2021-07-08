@@ -82,10 +82,11 @@ def not_data_key(s):
 
 
 def one_of_keys(*keys):
+    """Checks that at least one key is present (not exclusive OR)"""
     def _check(d):
-        if sum(k in d for k in keys) == 1:
+        if sum(k in d for k in keys) > 0:
             return True
-        raise SchemaError("Must have one of {}".format(keys))
+        raise SchemaError("Must have at least one of {}".format(keys))
     return _check
 
 
