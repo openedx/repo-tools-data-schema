@@ -3,6 +3,7 @@ Functions for validating the schema of repo-tools-data.
 """
 
 import collections
+import csv
 import datetime
 import difflib
 import pathlib
@@ -141,7 +142,6 @@ PEOPLE_SCHEMA = Schema(
     }
 )
 
-
 ORGS_SCHEMA = Schema(
     {
         str: {
@@ -231,13 +231,37 @@ def validate_people(filename):
 
     global ALL_ORGS, ALL_PEOPLE
     with open(pathlib.Path(filename).parent / "orgs.yaml") as orgsf:
-        ALL_ORGS = set(yaml.safe_load(orgsf))
+        org_data = yaml.safe_load(orgsf)
+        ALL_ORGS = set(org_data)
+        for orgd in org_data.values():
+            name = orgd.get("name")
+            if name:
+                ALL_ORGS.add(name)
 
     ALL_PEOPLE = set(people)
 
     PEOPLE_SCHEMA.validate(people)
     # keys should be sorted.
     assert_sorted(people, "Keys in {}".format(filename))
+
+
+def validate_salesforce_export(filename):
+    """
+    Validate that `filename` is a Salesforce export we expect.
+    """
+    with open(filename, encoding="cp1252") as fcsv:
+        reader = csv.DictReader(fcsv)
+        # fields are:
+        # "First Name","Last Name","Number of Active Ind. CLA Contracts","Title","Account Name","Number of Active Entity CLA Contracts","GitHub Username"
+        for row in reader:
+            acct = row["Account Name"]
+            if acct == "Opfocus Test":
+                # A bogus entry made by the vendor. skip it.
+                continue
+            acct_valid = (acct in ALL_ORGS or acct == "Individual Contributors")
+            assert acct_valid, f"Account Name is not a valid org: {acct}"
+            username = row["GitHub Username"]
+            assert github_username(username), f"GitHub Username is not valid: {username}"
 
 
 def assert_sorted(strs, what):
