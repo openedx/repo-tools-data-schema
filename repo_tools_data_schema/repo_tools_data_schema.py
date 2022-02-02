@@ -258,7 +258,9 @@ def validate_salesforce_export(filename):
             if acct == "Opfocus Test":
                 # A bogus entry made by the vendor. skip it.
                 continue
-            acct_valid = (acct in ALL_ORGS or acct == "Individual Contributors")
+            # "Individual Contributors" and "Household Accounts" are both Salesforce artifacts.
+            # In both cases, these records represent unaffiliated individual contributors.
+            acct_valid = (acct in ALL_ORGS or acct == "Individual Contributors" or acct.endswith(" Household"))
             assert acct_valid, f"Account Name is not a valid org: {acct}"
             username = row["GitHub Username"]
             assert github_username(username), f"GitHub Username is not valid: {username}"
