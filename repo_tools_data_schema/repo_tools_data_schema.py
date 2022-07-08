@@ -245,11 +245,11 @@ def validate_people(filename):
     assert_sorted(people, "Keys in {}".format(filename))
 
 
-def validate_salesforce_export(filename):
+def validate_salesforce_export(filename, encoding="cp1252"):
     """
     Validate that `filename` is a Salesforce export we expect.
     """
-    with open(filename, encoding="cp1252") as fcsv:
+    with open(filename, encoding=encoding) as fcsv:
         reader = csv.DictReader(fcsv)
         # fields are:
         # "First Name","Last Name","Number of Active Ind. CLA Contracts","Title","Account Name","Number of Active Entity CLA Contracts","GitHub Username"
