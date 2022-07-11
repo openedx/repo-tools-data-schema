@@ -36,6 +36,6 @@ invitation`_, then join our `community Slack workspace`_.
 
 For more information about these options, see the `Getting Help`_ page.
 
-.. _Slack invitation: https://openedx-slack-invite.herokuapp.com/
+.. _Slack invitation: https://openedx.org/slack
 .. _community Slack workspace: https://openedx.slack.com/
 .. _Getting Help: https://openedx.org/getting-help
