@@ -6,9 +6,11 @@ import collections
 import csv
 import datetime
 import difflib
+import functools
 import pathlib
 import re
 
+import requests
 import yaml
 from schema import And, Optional, Or, Schema, SchemaError
 from yaml.constructor import ConstructorError
@@ -28,6 +30,12 @@ def valid_email(s):
     )
 
 
+@functools.lru_cache(maxsize=None)
+def success_github_rest(url):
+    resp = requests.get(f"https://api.github.com/{url}")
+    return resp.status_code == 200
+
+
 def valid_org(s):
     """Is this a valid GitHub org?"""
     return isinstance(s, str) and re.match(r"^[^/]+$", s)
@@ -35,7 +43,11 @@ def valid_org(s):
 
 def valid_repo(s):
     """Is this a valid repo?"""
-    return isinstance(s, str) and re.match(r"^[^/]+/[^/]+$", s)
+    return (
+        isinstance(s, str) and
+        re.match(r"^[^/]+/[^/]+$", s) and
+        success_github_rest(f"repos/{s}")
+    )
 
 
 def existing_person(s):
