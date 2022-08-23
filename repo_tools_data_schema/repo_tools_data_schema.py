@@ -31,10 +31,14 @@ def valid_email(s):
 
 
 @functools.lru_cache(maxsize=None)
-def success_github_rest(url):
-    resp = requests.get(f"https://api.github.com/{url}")
-    return resp.status_code == 200
-
+def github_repo_exists(full_name):
+    resp = requests.get(f"https://api.github.com/repos/{full_name}")
+    if resp.status_code != 200:
+        raise SchemaError(f"GitHub responded with {resp.status_code} for repo {full_name}")
+    repo_actual_name = resp.json()["full_name"]
+    if repo_actual_name != full_name:
+        raise SchemaError(f"Repo {full_name} is actually at {repo_actual_name}")
+    return True
 
 def valid_org(s):
     """Is this a valid GitHub org?"""
@@ -46,7 +50,7 @@ def valid_repo(s):
     return (
         isinstance(s, str) and
         re.match(r"^[^/]+/[^/]+$", s) and
-        success_github_rest(f"repos/{s}")
+        github_repo_exists(s)
     )
 
 
