@@ -110,7 +110,7 @@ setup(
     long_description=README + '\n\n' + CHANGELOG,
     author='edX',
     author_email='oscm@edx.org',
-    url='https://github.com/edx/repo-tools-data-schema',
+    url='https://github.com/openedx/repo-tools-data-schema',
     packages=[
         'repo_tools_data_schema',
     ],
