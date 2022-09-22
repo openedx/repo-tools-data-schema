@@ -9,6 +9,16 @@ Change Log
 
    This project adheres to Semantic Versioning (https://semver.org/).
 
+2022-09-22
+~~~~~~~~~~
+
+Changed
+=======
+
+* Don't validate orgs using orgs.yaml in the saleseforce export csv.
+
+
+
 2020-08-07
 ~~~~~~~~~~
 
