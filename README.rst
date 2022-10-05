@@ -1,9 +1,9 @@
 repo-tools-data-schema
 ======================
 
-These are schema validators for the data in the (private) edx/repo-tools-data repo.
+These are schema validators for the data in the (private) openedx/openedx-webhooks-data repo.
 
-There are no tests in this repo.  The repo-tools-data repo and the openedx-webhooks repo install these validators to run as part of their tests.
+There are no tests in this repo.  The openedx-webhooks-data and openedx-webhooks repos install these validators to run as part of their tests.
 
 License
 -------
