@@ -10,6 +10,7 @@ import functools
 import pathlib
 import re
 
+import backoff
 import requests
 import yaml
 from schema import And, Optional, Or, Schema, SchemaError
@@ -31,6 +32,7 @@ def valid_email(s):
 
 
 @functools.lru_cache(maxsize=None)
+@backoff.on_exception(backoff.expo, SchemaError, max_time=60)
 def github_repo_exists(full_name):
     resp = requests.get(f"https://api.github.com/repos/{full_name}")
     if resp.status_code != 200:
