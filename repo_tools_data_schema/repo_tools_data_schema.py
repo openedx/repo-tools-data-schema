@@ -7,6 +7,7 @@ import csv
 import datetime
 import difflib
 import functools
+import os
 import pathlib
 import re
 
@@ -34,7 +35,11 @@ def valid_email(s):
 @functools.lru_cache(maxsize=None)
 @backoff.on_exception(backoff.expo, SchemaError, max_time=60)
 def github_repo_exists(full_name):
-    resp = requests.get(f"https://api.github.com/repos/{full_name}")
+    headers = None
+    if (token := os.environ.get("GITHUB_TOKEN")):
+        headers = {"authorization": f"Bearer {token}"}
+
+    resp = requests.get(f"https://api.github.com/repos/{full_name}", headers=headers)
     if resp.status_code != 200:
         raise SchemaError(f"GitHub responded with {resp.status_code} for repo {full_name}")
     repo_actual_name = resp.json()["full_name"]
