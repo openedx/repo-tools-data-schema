@@ -4,23 +4,23 @@
 #
 #    make upgrade
 #
-alabaster==0.7.12
+alabaster==0.7.13
     # via sphinx
 attrs==22.2.0
     # via
     #   -r requirements/test.txt
     #   pytest
-babel==2.11.0
+babel==2.12.1
     # via sphinx
 backoff==2.2.1
     # via -r requirements/test.txt
-bleach==5.0.1
+bleach==6.0.0
     # via readme-renderer
 certifi==2022.12.7
     # via
     #   -r requirements/test.txt
     #   requests
-charset-normalizer==2.1.1
+charset-normalizer==3.0.1
     # via
     #   -r requirements/test.txt
     #   requests
@@ -28,7 +28,7 @@ contextlib2==21.6.0
     # via
     #   -r requirements/test.txt
     #   schema
-coverage[toml]==7.0.3
+coverage[toml]==7.2.1
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -40,7 +40,7 @@ docutils==0.19
     #   readme-renderer
     #   restructuredtext-lint
     #   sphinx
-edx-sphinx-theme==3.0.0
+edx-sphinx-theme==3.1.0
     # via -r requirements/doc.in
 exceptiongroup==1.1.0
     # via
@@ -54,20 +54,20 @@ imagesize==1.4.1
     # via sphinx
 importlib-metadata==6.0.0
     # via sphinx
-iniconfig==1.1.1
+iniconfig==2.0.0
     # via
     #   -r requirements/test.txt
     #   pytest
 jinja2==3.1.2
     # via sphinx
-markupsafe==2.1.1
+markupsafe==2.1.2
     # via jinja2
-packaging==22.0
+packaging==23.0
     # via
     #   -r requirements/test.txt
     #   pytest
     #   sphinx
-pbr==5.11.0
+pbr==5.11.1
     # via stevedore
 pluggy==1.0.0
     # via
@@ -78,19 +78,19 @@ pygments==2.14.0
     #   doc8
     #   readme-renderer
     #   sphinx
-pytest==7.2.0
+pytest==7.2.1
     # via
     #   -r requirements/test.txt
     #   pytest-cov
 pytest-cov==4.0.0
     # via -r requirements/test.txt
-pytz==2022.7
+pytz==2022.7.1
     # via babel
 pyyaml==6.0
     # via -r requirements/test.txt
 readme-renderer==37.3
     # via -r requirements/doc.in
-requests==2.28.1
+requests==2.28.2
     # via
     #   -r requirements/test.txt
     #   sphinx
@@ -104,15 +104,16 @@ six==1.16.0
     #   edx-sphinx-theme
 snowballstemmer==2.2.0
     # via sphinx
-sphinx==6.1.0
+sphinx==5.3.0
     # via
+    #   -c requirements/common_constraints.txt
     #   -r requirements/doc.in
     #   edx-sphinx-theme
-sphinxcontrib-applehelp==1.0.2
+sphinxcontrib-applehelp==1.0.4
     # via sphinx
 sphinxcontrib-devhelp==1.0.2
     # via sphinx
-sphinxcontrib-htmlhelp==2.0.0
+sphinxcontrib-htmlhelp==2.0.1
     # via sphinx
 sphinxcontrib-jsmath==1.0.1
     # via sphinx
@@ -120,7 +121,7 @@ sphinxcontrib-qthelp==1.0.3
     # via sphinx
 sphinxcontrib-serializinghtml==1.1.5
     # via sphinx
-stevedore==4.1.1
+stevedore==5.0.0
     # via doc8
 tomli==2.0.1
     # via
@@ -128,11 +129,11 @@ tomli==2.0.1
     #   coverage
     #   doc8
     #   pytest
-urllib3==1.26.13
+urllib3==1.26.14
     # via
     #   -r requirements/test.txt
     #   requests
 webencodings==0.5.1
     # via bleach
-zipp==3.11.0
+zipp==3.15.0
     # via importlib-metadata

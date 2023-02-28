@@ -4,7 +4,7 @@
 #
 #    make upgrade
 #
-astroid==2.12.13
+astroid==2.14.2
     # via
     #   -r requirements/quality.txt
     #   pylint
@@ -15,7 +15,7 @@ attrs==22.2.0
     #   pytest
 backoff==2.2.1
     # via -r requirements/quality.txt
-build==0.9.0
+build==0.10.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
@@ -26,7 +26,7 @@ certifi==2022.12.7
     #   requests
 chardet==5.1.0
     # via diff-cover
-charset-normalizer==2.1.1
+charset-normalizer==3.0.1
     # via
     #   -r requirements/ci.txt
     #   -r requirements/quality.txt
@@ -53,13 +53,13 @@ contextlib2==21.6.0
     # via
     #   -r requirements/quality.txt
     #   schema
-coverage[toml]==7.0.3
+coverage[toml]==7.2.1
     # via
     #   -r requirements/ci.txt
     #   -r requirements/quality.txt
     #   codecov
     #   pytest-cov
-diff-cover==7.3.0
+diff-cover==7.5.0
     # via -r requirements/dev.in
 dill==0.3.6
     # via
@@ -69,7 +69,7 @@ distlib==0.3.6
     # via
     #   -r requirements/ci.txt
     #   virtualenv
-edx-lint==5.3.0
+edx-lint==5.3.2
     # via -r requirements/quality.txt
 exceptiongroup==1.1.0
     # via
@@ -85,11 +85,11 @@ idna==3.4
     #   -r requirements/ci.txt
     #   -r requirements/quality.txt
     #   requests
-iniconfig==1.1.1
+iniconfig==2.0.0
     # via
     #   -r requirements/quality.txt
     #   pytest
-isort==5.11.4
+isort==5.12.0
     # via
     #   -r requirements/quality.txt
     #   pylint
@@ -102,7 +102,7 @@ lazy-object-proxy==1.9.0
     # via
     #   -r requirements/quality.txt
     #   astroid
-markupsafe==2.1.1
+markupsafe==2.1.2
     # via
     #   -r requirements/quality.txt
     #   jinja2
@@ -110,7 +110,7 @@ mccabe==0.7.0
     # via
     #   -r requirements/quality.txt
     #   pylint
-packaging==22.0
+packaging==23.0
     # via
     #   -r requirements/ci.txt
     #   -r requirements/pip-tools.txt
@@ -118,17 +118,13 @@ packaging==22.0
     #   build
     #   pytest
     #   tox
-pbr==5.11.0
+pbr==5.11.1
     # via
     #   -r requirements/quality.txt
     #   stevedore
-pep517==0.13.0
-    # via
-    #   -r requirements/pip-tools.txt
-    #   build
-pip-tools==6.12.1
+pip-tools==6.12.2
     # via -r requirements/pip-tools.txt
-platformdirs==2.6.2
+platformdirs==3.0.0
     # via
     #   -r requirements/ci.txt
     #   -r requirements/quality.txt
@@ -149,7 +145,7 @@ pycodestyle==2.10.0
     # via -r requirements/quality.txt
 pygments==2.14.0
     # via diff-cover
-pylint==2.15.9
+pylint==2.16.2
     # via
     #   -r requirements/quality.txt
     #   edx-lint
@@ -169,13 +165,17 @@ pylint-plugin-utils==0.7
     #   -r requirements/quality.txt
     #   pylint-celery
     #   pylint-django
-pytest==7.2.0
+pyproject-hooks==1.0.0
+    # via
+    #   -r requirements/pip-tools.txt
+    #   build
+pytest==7.2.1
     # via
     #   -r requirements/quality.txt
     #   pytest-cov
 pytest-cov==4.0.0
     # via -r requirements/quality.txt
-python-slugify==7.0.0
+python-slugify==8.0.1
     # via
     #   -r requirements/quality.txt
     #   code-annotations
@@ -183,7 +183,7 @@ pyyaml==6.0
     # via
     #   -r requirements/quality.txt
     #   code-annotations
-requests==2.28.1
+requests==2.28.2
     # via
     #   -r requirements/ci.txt
     #   -r requirements/quality.txt
@@ -196,7 +196,7 @@ six==1.16.0
     #   -r requirements/quality.txt
     #   edx-lint
     #   tox
-stevedore==4.1.1
+stevedore==5.0.0
     # via
     #   -r requirements/quality.txt
     #   code-annotations
@@ -211,8 +211,8 @@ tomli==2.0.1
     #   -r requirements/quality.txt
     #   build
     #   coverage
-    #   pep517
     #   pylint
+    #   pyproject-hooks
     #   pytest
     #   tox
 tomlkit==0.11.6
@@ -226,17 +226,17 @@ tox==3.28.0
     #   tox-battery
 tox-battery==0.6.1
     # via -r requirements/dev.in
-typing-extensions==4.4.0
+typing-extensions==4.5.0
     # via
     #   -r requirements/quality.txt
     #   astroid
     #   pylint
-urllib3==1.26.13
+urllib3==1.26.14
     # via
     #   -r requirements/ci.txt
     #   -r requirements/quality.txt
     #   requests
-virtualenv==20.17.1
+virtualenv==20.19.0
     # via
     #   -r requirements/ci.txt
     #   tox
@@ -244,7 +244,7 @@ wheel==0.38.4
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-wrapt==1.14.1
+wrapt==1.15.0
     # via
     #   -r requirements/quality.txt
     #   astroid
