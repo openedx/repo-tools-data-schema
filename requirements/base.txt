@@ -8,7 +8,7 @@ backoff==2.2.1
     # via -r requirements/base.in
 certifi==2022.12.7
     # via requests
-charset-normalizer==2.1.1
+charset-normalizer==3.0.1
     # via requests
 contextlib2==21.6.0
     # via schema
@@ -16,9 +16,9 @@ idna==3.4
     # via requests
 pyyaml==6.0
     # via -r requirements/base.in
-requests==2.28.1
+requests==2.28.2
     # via -r requirements/base.in
 schema==0.7.5
     # via -r requirements/base.in
-urllib3==1.26.13
+urllib3==1.26.14
     # via requests
