@@ -173,6 +173,7 @@ ORGS_SCHEMA = Schema(
             Optional("contractor"): bool,
             Optional("committer"): bool,
             Optional("internal"): bool,
+            Optional("internal-ghorgs"): [str],
             Optional(Or("contact", "contact1", "contact2")): {
                 "name": not_empty_string,
                 "email": valid_email,
