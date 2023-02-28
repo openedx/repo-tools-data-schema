@@ -9,15 +9,17 @@ Change Log
 
    This project adheres to Semantic Versioning (https://semver.org/).
 
+2023-03-02
+~~~~~~~~~~
+
+* Added a ``internal-ghorgs`` setting to represent the more complex world we
+  live in now after the decoupling.  Different institutions are "internal" to
+  different GitHub organizations.
+
 2022-09-22
 ~~~~~~~~~~
 
-Changed
-=======
-
 * Don't validate orgs using orgs.yaml in the saleseforce export csv.
-
-
 
 2020-08-07
 ~~~~~~~~~~
