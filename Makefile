@@ -51,7 +51,7 @@ requirements: ## install development environment requirements
 	pip-sync requirements/dev.txt requirements/private.*
 	pip install -e .
 
-test:
+test: ## run the few tests we have
 	pytest
 
 selfcheck: ## check that the Makefile is well-formed
