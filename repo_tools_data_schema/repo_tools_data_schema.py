@@ -14,8 +14,9 @@ import re
 import backoff
 import requests
 import yaml
-from schema import And, Optional, Or, Schema, SchemaError
 from yaml.constructor import ConstructorError
+
+from schema import And, Optional, Or, Schema, SchemaError
 
 
 def valid_agreement(s):
@@ -35,17 +36,23 @@ def valid_email(s):
 @functools.lru_cache(maxsize=None)
 @backoff.on_exception(backoff.expo, SchemaError, max_time=60)
 def github_repo_exists(full_name):
+    """
+    Determine if a GitHub repo exists.
+
+    Returns True, or raises an exception with details.
+    """
     headers = None
     if (token := os.environ.get("GITHUB_TOKEN")):
         headers = {"authorization": f"Bearer {token}"}
 
-    resp = requests.get(f"https://api.github.com/repos/{full_name}", headers=headers)
+    resp = requests.get(f"https://api.github.com/repos/{full_name}", headers=headers, timeout=60)
     if resp.status_code != 200:
         raise SchemaError(f"GitHub responded with {resp.status_code} for repo {full_name}")
     repo_actual_name = resp.json()["full_name"]
     if repo_actual_name != full_name:
         raise SchemaError(f"Repo {full_name} is actually at {repo_actual_name}")
     return True
+
 
 def valid_org(s):
     """Is this a valid GitHub org?"""
@@ -232,7 +239,8 @@ def validate_labels(filename):
     """
     Validate that `filename` conforms to our labels.yaml schema.
     """
-    labels = yaml.safe_load(open(filename))
+    with open(filename) as f:
+        labels = yaml.safe_load(f)
     LABELS_SCHEMA.validate(labels)
 
 
@@ -240,10 +248,15 @@ def validate_orgs(filename):
     """
     Validate that `filename` conforms to our orgs.yaml schema.
     """
-    orgs = yaml.safe_load(open(filename))
+    with open(filename) as f:
+        orgs = yaml.safe_load(f)
     ORGS_SCHEMA.validate(orgs)
     # keys should be sorted.
     assert_sorted(orgs, "Keys in {}".format(filename))
+
+
+ALL_ORGS = set()
+ALL_PEOPLE = set()
 
 
 def validate_people(filename):
@@ -251,7 +264,8 @@ def validate_people(filename):
     Validate that `filename` conforms to our people.yaml schema.
     Supporting files are found in the same directory as `filename`.
     """
-    people = yaml.safe_load(open(filename))
+    with open(filename) as f:
+        people = yaml.safe_load(f)
 
     global ALL_ORGS, ALL_PEOPLE
     with open(pathlib.Path(filename).parent / "orgs.yaml") as orgsf:
@@ -276,7 +290,8 @@ def validate_salesforce_export(filename, encoding="cp1252"):
     with open(filename, encoding=encoding) as fcsv:
         reader = csv.DictReader(fcsv)
         # fields are:
-        # "First Name","Last Name","Number of Active Ind. CLA Contracts","Title","Account Name","Number of Active Entity CLA Contracts","GitHub Username"
+        #   "First Name","Last Name","Number of Active Ind. CLA Contracts",
+        #   "Title","Account Name","Number of Active Entity CLA Contracts","GitHub Username"
         for row in reader:
             acct = row["Account Name"]
             if acct == "Opfocus Test":
