@@ -43,7 +43,7 @@ upgrade: $(COMMON_CONSTRAINTS_TXT)
 quality: ## check coding style with pycodestyle and pylint
 	pylint repo_tools_data_schema *.py
 	pycodestyle repo_tools_data_schema *.py
-	isort --check-only --diff --recursive repo_tools_data_schema *.py
+	isort --check-only --diff repo_tools_data_schema *.py
 	make selfcheck
 
 requirements: ## install development environment requirements
