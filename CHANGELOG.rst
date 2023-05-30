@@ -9,6 +9,14 @@ Change Log
 
    This project adheres to Semantic Versioning (https://semver.org/).
 
+
+2023-05-30
+~~~~~~~~~~
+
+* Make it valid for ORGS, LABELS, and PEOPLE to be empty. This was prompted
+  because we actually want LABELS to be empty as an intermediate step towards
+  removing label creation from openedx-webhooks.
+
 2023-03-02
 ~~~~~~~~~~
 

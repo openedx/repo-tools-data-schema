@@ -140,52 +140,58 @@ COMMITTER_SCHEMA = Schema(
 )
 
 PEOPLE_SCHEMA = Schema(
-    {
-        And(github_username, not_data_key): And(
-            {
-                'name': not_empty_string,
-                'email': valid_email,
-                'agreement': valid_agreement,
-                Optional('institution'): not_empty_string,
-                Optional('is_robot'): True,
-                Optional('jira'): not_empty_string,
-                Optional('comments'): [str],
-                Optional('other_emails'): [valid_email],
-                Optional('before'): {
-                    datetime.date: And(
-                        {
-                            Optional('agreement'): valid_agreement,
-                            Optional('institution'): not_empty_string,
-                            Optional('comments'): [str],
-                            Optional('committer'): COMMITTER_SCHEMA,
-                        },
-                        check_institution,
-                    ),
+    Or(
+        {
+            And(github_username, not_data_key): And(
+                {
+                    'name': not_empty_string,
+                    'email': valid_email,
+                    'agreement': valid_agreement,
+                    Optional('institution'): not_empty_string,
+                    Optional('is_robot'): True,
+                    Optional('jira'): not_empty_string,
+                    Optional('comments'): [str],
+                    Optional('other_emails'): [valid_email],
+                    Optional('before'): {
+                        datetime.date: And(
+                            {
+                                Optional('agreement'): valid_agreement,
+                                Optional('institution'): not_empty_string,
+                                Optional('comments'): [str],
+                                Optional('committer'): COMMITTER_SCHEMA,
+                            },
+                            check_institution,
+                        ),
+                    },
+                    Optional('beta'): bool,
+                    Optional('contractor'): bool,
+                    Optional('committer'): COMMITTER_SCHEMA,
+                    Optional('email_ok'): bool,
                 },
-                Optional('beta'): bool,
-                Optional('contractor'): bool,
-                Optional('committer'): COMMITTER_SCHEMA,
-                Optional('email_ok'): bool,
-            },
-            check_institution,
-        ),
-    }
+                check_institution,
+            ),
+        },
+        {},
+    ),
 )
 
 ORGS_SCHEMA = Schema(
-    {
-        str: {
-            Optional("name"): not_empty_string,
-            "agreement": Or("institution", "none"),
-            Optional("contractor"): bool,
-            Optional("committer"): bool,
-            Optional("internal-ghorgs"): [str],
-            Optional(Or("contact", "contact1", "contact2")): {
-                "name": not_empty_string,
-                "email": valid_email,
+    Or(
+        {
+            str: {
+                Optional("name"): not_empty_string,
+                "agreement": Or("institution", "none"),
+                Optional("contractor"): bool,
+                Optional("committer"): bool,
+                Optional("internal-ghorgs"): [str],
+                Optional(Or("contact", "contact1", "contact2")): {
+                    "name": not_empty_string,
+                    "email": valid_email,
+                },
             },
         },
-    }
+        {},
+    )
 )
 
 
@@ -194,19 +200,22 @@ def color(s):
 
 
 LABELS_SCHEMA = Schema(
-    {
-        str: Or(
-            # A label we don't want:
-            {
-                "delete": True,
-            },
-            # A label we want:
-            {
-                "color": color,
-                Optional("description"): str,
-            },
-        ),
-    },
+    Or(
+        {
+            str: Or(
+                # A label we don't want:
+                {
+                    "delete": True,
+                },
+                # A label we want:
+                {
+                    "color": color,
+                    Optional("description"): str,
+                },
+            ),
+        },
+        {},
+    ),
 )
 
 
