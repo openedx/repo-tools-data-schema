@@ -10,8 +10,15 @@ Change Log
    This project adheres to Semantic Versioning (https://semver.org/).
 
 
-2023-05-30
-~~~~~~~~~~
+2.0 (2023-06-20)
+~~~~~~~~~~~~~~~~
+
+* Delete ``validate_labels``, since ``labels.yaml`` is not longer used by
+  openedx-webhooks.
+  
+
+1.1 (2023-05-30)
+~~~~~~~~~~~~~~~~
 
 * Make it valid for ORGS, LABELS, and PEOPLE to be empty. This was prompted
   because we actually want LABELS to be empty as an intermediate step towards

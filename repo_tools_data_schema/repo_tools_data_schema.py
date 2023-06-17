@@ -199,26 +199,6 @@ def color(s):
     return re.match(r"^[a-fA-F0-9]{6}$", s)
 
 
-LABELS_SCHEMA = Schema(
-    Or(
-        {
-            str: Or(
-                # A label we don't want:
-                {
-                    "delete": True,
-                },
-                # A label we want:
-                {
-                    "color": color,
-                    Optional("description"): str,
-                },
-            ),
-        },
-        {},
-    ),
-)
-
-
 # Prevent duplicate keys in YAML.
 # Adapted from https://gist.github.com/pypt/94d747fe5180851196eb
 # from https://bitbucket.org/xi/pyyaml/issues/9/ignore-duplicate-keys-and-send-warning-or
@@ -242,14 +222,6 @@ yaml.SafeLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, 
 
 
 # The public functions.
-
-def validate_labels(filename):
-    """
-    Validate that `filename` conforms to our labels.yaml schema.
-    """
-    with open(filename) as f:
-        labels = yaml.safe_load(f)
-    LABELS_SCHEMA.validate(labels)
 
 
 def validate_orgs(filename):
