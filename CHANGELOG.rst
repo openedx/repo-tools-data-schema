@@ -10,6 +10,12 @@ Change Log
    This project adheres to Semantic Versioning (https://semver.org/).
 
 
+2023-07-25
+~~~~~~~~~~
+
+* Removed validation of labels.yaml files.  The OSPR bot no longer reads
+  labels.yaml, so that file will be deleted.
+
 2023-05-30
 ~~~~~~~~~~
 
