@@ -100,9 +100,10 @@ def validate_salesforce_export(filename, encoding="cp1252"):
     """
     with open(filename, encoding=encoding) as fcsv:
         reader = csv.DictReader(fcsv)
-        # fields are:
-        #   "First Name","Last Name","Number of Active Ind. CLA Contracts",
-        #   "Title","Account Name","Number of Active Entity CLA Contracts","GitHub Username"
+        assert reader.fieldnames == [
+            "First Name", "Last Name", "Number of Active Ind. CLA Contracts",
+            "Title", "Account Name", "Number of Active Entity CLA Contracts", "GitHub Username",
+        ]
         for row in reader:
             acct = row["Account Name"]
             if acct == "Opfocus Test":
