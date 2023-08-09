@@ -4,24 +4,12 @@ Functions for validating the schema of repo-tools-data.
 
 import collections
 import csv
-import datetime
 import difflib
-import functools
-import os
-import pathlib
 import re
 
-import backoff
-import requests
 import yaml
+from schema import Optional, Or, Schema
 from yaml.constructor import ConstructorError
-
-from schema import And, Optional, Or, Schema, SchemaError
-
-
-def valid_agreement(s):
-    """Is this a valid "agreement" value?"""
-    return s in ['institution', 'individual', 'none']
 
 
 def valid_email(s):
@@ -33,62 +21,9 @@ def valid_email(s):
     )
 
 
-@functools.lru_cache(maxsize=None)
-@backoff.on_exception(backoff.expo, SchemaError, max_time=60)
-def github_repo_exists(full_name):
-    """
-    Determine if a GitHub repo exists.
-
-    Returns True, or raises an exception with details.
-    """
-    headers = None
-    if (token := os.environ.get("GITHUB_TOKEN")):
-        headers = {"authorization": f"Bearer {token}"}
-
-    resp = requests.get(f"https://api.github.com/repos/{full_name}", headers=headers, timeout=60)
-    if resp.status_code != 200:
-        raise SchemaError(f"GitHub responded with {resp.status_code} for repo {full_name}")
-    repo_actual_name = resp.json()["full_name"]
-    if repo_actual_name != full_name:
-        raise SchemaError(f"Repo {full_name} is actually at {repo_actual_name}")
-    return True
-
-
-def valid_org(s):
-    """Is this a valid GitHub org?"""
-    return isinstance(s, str) and re.match(r"^[^/]+$", s)
-
-
-def valid_repo(s):
-    """Is this a valid repo?"""
-    return (
-        isinstance(s, str) and
-        re.match(r"^[^/]+/[^/]+$", s) and
-        github_repo_exists(s)
-    )
-
-
-def existing_person(s):
-    """Is this an existing person in people.yaml?"""
-    return isinstance(s, str) and s in ALL_PEOPLE
-
-
 def not_empty_string(s):
     """A string that can't be empty."""
     return isinstance(s, str) and len(s) > 0
-
-
-def check_institution(d):
-    """If the agreement is institution, then we have to have an institution."""
-    if "agreement" in d:
-        if d['agreement'] == 'institution':
-            if 'institution' in d:
-                if d['institution'] not in ALL_ORGS:
-                    raise SchemaError("Institution {!r} isn't in orgs.yaml: {}".format(d['institution'], d))
-        if d['agreement'] == 'none':
-            if 'institution' in d:
-                raise SchemaError("No-agreement should have no institution")
-    return True
 
 
 def github_username(s):
@@ -103,77 +38,6 @@ def github_username(s):
     # account, so allow a star at the end.
     return re.match(r"^[a-zA-Z0-9_-]+\*?$", s)
 
-
-def not_data_key(s):
-    """Make sure the GitHub name is not a data line at the wrong indent."""
-    return s not in [
-        'name', 'email', 'agreement', 'institution', 'jira',
-        'comments', 'other_emails', 'before', 'beta', 'committer', 'email_ok',
-    ]
-
-
-def one_of_keys(*keys):
-    """Checks that at least one key is present (not exclusive OR)"""
-    def _check(d):
-        if sum(k in d for k in keys) > 0:
-            return True
-        raise SchemaError("Must have at least one of {}".format(keys))
-    return _check
-
-
-COMMITTER_SCHEMA = Schema(
-    Or(
-        # "committer: false" means this person is not a committer.
-        False,
-        # or explain where they are a committer:
-        And(
-            {
-                Optional('orgs'): [valid_org],
-                Optional('repos'): [valid_repo],
-                Optional('champions'): [existing_person],
-                Optional('branches'): [not_empty_string],
-            },
-            # You have to specify at least one of orgs, repos, or branches:
-            one_of_keys("orgs", "repos", "branches"),
-        ),
-    ),
-)
-
-PEOPLE_SCHEMA = Schema(
-    Or(
-        {
-            And(github_username, not_data_key): And(
-                {
-                    'name': not_empty_string,
-                    'email': valid_email,
-                    'agreement': valid_agreement,
-                    Optional('institution'): not_empty_string,
-                    Optional('is_robot'): True,
-                    Optional('jira'): not_empty_string,
-                    Optional('comments'): [str],
-                    Optional('other_emails'): [valid_email],
-                    Optional('before'): {
-                        datetime.date: And(
-                            {
-                                Optional('agreement'): valid_agreement,
-                                Optional('institution'): not_empty_string,
-                                Optional('comments'): [str],
-                                Optional('committer'): COMMITTER_SCHEMA,
-                            },
-                            check_institution,
-                        ),
-                    },
-                    Optional('beta'): bool,
-                    Optional('contractor'): bool,
-                    Optional('committer'): COMMITTER_SCHEMA,
-                    Optional('email_ok'): bool,
-                },
-                check_institution,
-            ),
-        },
-        {},
-    ),
-)
 
 ORGS_SCHEMA = Schema(
     Or(
@@ -228,34 +92,6 @@ def validate_orgs(filename):
     ORGS_SCHEMA.validate(orgs)
     # keys should be sorted.
     assert_sorted(orgs, "Keys in {}".format(filename))
-
-
-ALL_ORGS = set()
-ALL_PEOPLE = set()
-
-
-def validate_people(filename):
-    """
-    Validate that `filename` conforms to our people.yaml schema.
-    Supporting files are found in the same directory as `filename`.
-    """
-    with open(filename) as f:
-        people = yaml.safe_load(f)
-
-    global ALL_ORGS, ALL_PEOPLE
-    with open(pathlib.Path(filename).parent / "orgs.yaml") as orgsf:
-        org_data = yaml.safe_load(orgsf)
-        ALL_ORGS = set(org_data)
-        for orgd in org_data.values():
-            name = orgd.get("name")
-            if name:
-                ALL_ORGS.add(name)
-
-    ALL_PEOPLE = set(people)
-
-    PEOPLE_SCHEMA.validate(people)
-    # keys should be sorted.
-    assert_sorted(people, "Keys in {}".format(filename))
 
 
 def validate_salesforce_export(filename, encoding="cp1252"):

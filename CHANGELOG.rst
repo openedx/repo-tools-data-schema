@@ -10,6 +10,12 @@ Change Log
    This project adheres to Semantic Versioning (https://semver.org/).
 
 
+2023-08-09
+~~~~~~~~~~
+
+* Removed validation of people.yaml files.  The OSPR bot no longer reads
+  people.yaml, so that file will be deleted.
+
 2023-07-25
 ~~~~~~~~~~
 
