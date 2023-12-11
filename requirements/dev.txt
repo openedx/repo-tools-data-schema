@@ -4,18 +4,25 @@
 #
 #    make upgrade
 #
-astroid==2.15.6
+astroid==3.0.1
     # via
     #   -r requirements/quality.txt
     #   pylint
     #   pylint-celery
-build==0.10.0
+build==1.0.3
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
+cachetools==5.3.2
+    # via
+    #   -r requirements/ci.txt
+    #   tox
 chardet==5.2.0
-    # via diff-cover
-click==8.1.6
+    # via
+    #   -r requirements/ci.txt
+    #   diff-cover
+    #   tox
+click==8.1.7
     # via
     #   -r requirements/pip-tools.txt
     #   -r requirements/quality.txt
@@ -31,15 +38,20 @@ code-annotations==1.5.0
     # via
     #   -r requirements/quality.txt
     #   edx-lint
+colorama==0.4.6
+    # via
+    #   -r requirements/ci.txt
+    #   tox
 contextlib2==21.6.0
     # via
     #   -r requirements/quality.txt
     #   schema
-coverage[toml]==7.2.7
+coverage[toml]==7.3.2
     # via
     #   -r requirements/quality.txt
+    #   coverage
     #   pytest-cov
-diff-cover==7.7.0
+diff-cover==8.0.1
     # via -r requirements/dev.in
 dill==0.3.7
     # via
@@ -49,17 +61,21 @@ distlib==0.3.7
     # via
     #   -r requirements/ci.txt
     #   virtualenv
-edx-lint==5.3.4
+edx-lint==5.3.6
     # via -r requirements/quality.txt
-exceptiongroup==1.1.2
+exceptiongroup==1.2.0
     # via
     #   -r requirements/quality.txt
     #   pytest
-filelock==3.12.2
+filelock==3.13.1
     # via
     #   -r requirements/ci.txt
     #   tox
     #   virtualenv
+importlib-metadata==7.0.0
+    # via
+    #   -r requirements/pip-tools.txt
+    #   build
 iniconfig==2.0.0
     # via
     #   -r requirements/quality.txt
@@ -73,10 +89,6 @@ jinja2==3.1.2
     #   -r requirements/quality.txt
     #   code-annotations
     #   diff-cover
-lazy-object-proxy==1.9.0
-    # via
-    #   -r requirements/quality.txt
-    #   astroid
 markupsafe==2.1.3
     # via
     #   -r requirements/quality.txt
@@ -85,42 +97,40 @@ mccabe==0.7.0
     # via
     #   -r requirements/quality.txt
     #   pylint
-packaging==23.1
+packaging==23.2
     # via
     #   -r requirements/ci.txt
     #   -r requirements/pip-tools.txt
     #   -r requirements/quality.txt
     #   build
+    #   pyproject-api
     #   pytest
     #   tox
-pbr==5.11.1
+pbr==6.0.0
     # via
     #   -r requirements/quality.txt
     #   stevedore
 pip-tools==7.3.0
     # via -r requirements/pip-tools.txt
-platformdirs==3.10.0
+platformdirs==4.1.0
     # via
     #   -r requirements/ci.txt
     #   -r requirements/quality.txt
     #   pylint
+    #   tox
     #   virtualenv
-pluggy==1.2.0
+pluggy==1.3.0
     # via
     #   -r requirements/ci.txt
     #   -r requirements/quality.txt
     #   diff-cover
     #   pytest
     #   tox
-py==1.11.0
-    # via
-    #   -r requirements/ci.txt
-    #   tox
-pycodestyle==2.11.0
+pycodestyle==2.11.1
     # via -r requirements/quality.txt
-pygments==2.16.1
+pygments==2.17.2
     # via diff-cover
-pylint==2.17.5
+pylint==3.0.2
     # via
     #   -r requirements/quality.txt
     #   edx-lint
@@ -131,7 +141,7 @@ pylint-celery==0.3
     # via
     #   -r requirements/quality.txt
     #   edx-lint
-pylint-django==2.5.3
+pylint-django==2.5.5
     # via
     #   -r requirements/quality.txt
     #   edx-lint
@@ -140,11 +150,15 @@ pylint-plugin-utils==0.8.2
     #   -r requirements/quality.txt
     #   pylint-celery
     #   pylint-django
+pyproject-api==1.6.1
+    # via
+    #   -r requirements/ci.txt
+    #   tox
 pyproject-hooks==1.0.0
     # via
     #   -r requirements/pip-tools.txt
     #   build
-pytest==7.4.0
+pytest==7.4.3
     # via
     #   -r requirements/quality.txt
     #   pytest-cov
@@ -162,10 +176,8 @@ schema==0.7.5
     # via -r requirements/quality.txt
 six==1.16.0
     # via
-    #   -r requirements/ci.txt
     #   -r requirements/quality.txt
     #   edx-lint
-    #   tox
 stevedore==5.1.0
     # via
     #   -r requirements/quality.txt
@@ -183,37 +195,33 @@ tomli==2.0.1
     #   coverage
     #   pip-tools
     #   pylint
+    #   pyproject-api
     #   pyproject-hooks
     #   pytest
     #   tox
-tomlkit==0.12.1
+tomlkit==0.12.3
     # via
     #   -r requirements/quality.txt
     #   pylint
-tox==3.28.0
-    # via
-    #   -c requirements/common_constraints.txt
-    #   -r requirements/ci.txt
-    #   tox-battery
-tox-battery==0.6.1
-    # via -r requirements/dev.in
-typing-extensions==4.7.1
+tox==4.11.4
+    # via -r requirements/ci.txt
+typing-extensions==4.8.0
     # via
     #   -r requirements/quality.txt
     #   astroid
     #   pylint
-virtualenv==20.24.2
+virtualenv==20.25.0
     # via
     #   -r requirements/ci.txt
     #   tox
-wheel==0.41.1
+wheel==0.42.0
     # via
     #   -r requirements/pip-tools.txt
     #   pip-tools
-wrapt==1.15.0
+zipp==3.17.0
     # via
-    #   -r requirements/quality.txt
-    #   astroid
+    #   -r requirements/pip-tools.txt
+    #   importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
